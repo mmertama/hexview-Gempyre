@@ -5,13 +5,17 @@ project (${NAME})
 
 set(CMAKE_CXX_STANDARD 17)
 
+set(TELEX_PATH $ENV{TELEX_DIR})
+
 include_directories(
-    ../../telexlib/include
-    ../../affiliates/include
+    ${TELEX_PATH}/telexlib/include
+    ${TELEX_PATH}/affiliates/include
    include
 )
 
-find_package (telex REQUIRED PATHS ../..)
+find_package (telex REQUIRED PATHS ${TELEX_PATH})
+include(${TELEX_PATH}/scripts/addResource.cmake_script)
+
 
 add_executable(${PROJECT_NAME}
    src/main.cpp
