@@ -66,9 +66,9 @@ std::string toOffset(const Bytes& bytes) {
 
 int main(int /*argc*/, char** /*argv*/)  {
     std::string filename;
-    const std::string miniview = TelexUtils::systemEnv("TELEX-EXTENSION") ;
-    telex_utils_assert_x(!miniview.empty(), "TELEX-EXTENSION not set");
-    telex_utils_assert_x(TelexUtils::isExecutable(miniview), "TELEX-EXTENSION does not point to file");
+    const std::string miniview = TelexUtils::systemEnv("TELEX_EXTENSION") ;
+    telex_utils_assert_x(!miniview.empty(), "TELEX_EXTENSION not set");
+    telex_utils_assert_x(TelexUtils::isExecutable(miniview), "TELEX_EXTENSION does not point to file");
     Telex::Ui ui({{"/hexview.html", Hexviewhtml}, {"/hexview.css", Hexviewcss}, {"/text_x_hex.png", Text_x_hexpng}},
                  "hexview.html", miniview, "500 640 Hexview");
     Telex::Element fileDialog(ui, "openfile");

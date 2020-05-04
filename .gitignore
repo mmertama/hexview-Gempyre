@@ -36,3 +36,6 @@ MakeFile
 calc
 cmake_install.cmake
 hexview
+CMakeLists.txt.user
+builds
+hexview.cbp
