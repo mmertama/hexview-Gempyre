@@ -1,8 +1,8 @@
-# hexview-Telex
-Hexviewer using Telex UI frawework
+# hexview-Gempyre
+Hexviewer using Gempyre UI frawework
 
 Before build set 
-TELEX_DIR env to Telex-framework directory
-before execute set TELEX_EXTENSION to to point telexclient binary (app in Telex-Framework/affiliates)
+GEMPYRE_DIR env to Gempyre-framework directory
+before execute set GEMPYRE_EXTENSION to to point gempyreclient binary (app in Gempyre-Framework/affiliates)
 
 

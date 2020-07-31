@@ -5,16 +5,16 @@ project (${NAME})
 
 set(CMAKE_CXX_STANDARD 17)
 
-set(TELEX_PATH $ENV{TELEX_DIR})
+set(GEMPYRE_PATH $ENV{GEMPYRE_DIR})
 
 include_directories(
-    ${TELEX_PATH}/telexlib/include
-    ${TELEX_PATH}/affiliates/include
+    ${GEMPYRE_PATH}/gempyrelib/include
+    ${GEMPYRE_PATH}/affiliates/include
    include
 )
 
-find_package (telex REQUIRED PATHS ${TELEX_PATH})
-include(${TELEX_PATH}/scripts/addResource.cmake_script)
+find_package (gempyre REQUIRED PATHS ${GEMPYRE_PATH})
+include(${GEMPYRE_PATH}/scripts/addResource.cmake_script)
 
 
 add_executable(${PROJECT_NAME}
@@ -25,5 +25,5 @@ add_executable(${PROJECT_NAME}
 
 addResource(PROJECT ${PROJECT_NAME} TARGET include/${NAME}_resource.h SOURCES gui/${NAME}.html gui/${NAME}.css gui/text_x_hex.png)
 
-target_link_libraries (${PROJECT_NAME} telex)
+target_link_libraries (${PROJECT_NAME} gempyre)
 

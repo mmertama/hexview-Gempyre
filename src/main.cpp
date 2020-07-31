@@ -1,6 +1,6 @@
-#include <telex.h>
-#include <telex_utils.h>
-#include <telex_client.h>
+#include <gempyre.h>
+#include <gempyre_utils.h>
+#include <gempyre_client.h>
 
 #include "hexview_resource.h"
 
@@ -66,35 +66,35 @@ std::string toOffset(const Bytes& bytes) {
 
 int main(int /*argc*/, char** /*argv*/)  {
     std::string filename;
-    const std::string miniview = TelexUtils::systemEnv("TELEX_EXTENSION") ;
-    telex_utils_assert_x(!miniview.empty(), "TELEX_EXTENSION not set");
-    telex_utils_assert_x(TelexUtils::isExecutable(miniview), "TELEX_EXTENSION does not point to file");
-    Telex::Ui ui({{"/hexview.html", Hexviewhtml}, {"/hexview.css", Hexviewcss}, {"/text_x_hex.png", Text_x_hexpng}},
+    const std::string miniview = GempyreUtils::systemEnv("GEMPYRE_EXTENSION") ;
+    gempyre_utils_assert_x(!miniview.empty(), "GEMPYRE_EXTENSION not set");
+    gempyre_utils_assert_x(GempyreUtils::isExecutable(miniview), "GEMPYRE_EXTENSION does not point to file");
+    Gempyre::Ui ui({{"/hexview.html", Hexviewhtml}, {"/hexview.css", Hexviewcss}, {"/text_x_hex.png", Text_x_hexpng}},
                  "hexview.html", miniview, "500 640 Hexview");
-    Telex::Element fileDialog(ui, "openfile");
-    fileDialog.subscribe("click", [&ui, &filename](const Telex::Event&) {
-        const auto out = TelexClient::Dialog<Telex::Ui>(ui).openFileDialog();
+    Gempyre::Element fileDialog(ui, "openfile");
+    fileDialog.subscribe("click", [&ui, &filename](const Gempyre::Event&) {
+        const auto out = GempyreClient::Dialog<Gempyre::Ui>(ui).openFileDialog();
 
         if(out.has_value()) {
                 filename = std::any_cast<std::string>(*out);
-                Telex::Element(ui, "filename").setHTML(filename);
-                const auto content = TelexUtils::slurp<unsigned char>(filename, MaxBytes);
-                Telex::Element ascii(ui, "ascii-field");
+                Gempyre::Element(ui, "filename").setHTML(filename);
+                const auto content = GempyreUtils::slurp<unsigned char>(filename, MaxBytes);
+                Gempyre::Element ascii(ui, "ascii-field");
                 ascii.setHTML(toAscii(content));
-                Telex::Element bytes(ui, "bytes-field");
+                Gempyre::Element bytes(ui, "bytes-field");
                 bytes.setHTML(toBytes(content));
-                Telex::Element offset(ui, "offset-field");
+                Gempyre::Element offset(ui, "offset-field");
                 offset.setHTML(toOffset(content));
-                if(MaxBytes < TelexUtils::fileSize(filename)) {
-                    Telex::Element(ui, "file-cut").setAttribute("style", "display:block");
+                if(MaxBytes < GempyreUtils::fileSize(filename)) {
+                    Gempyre::Element(ui, "file-cut").setAttribute("style", "display:block");
                 } else {
-                    Telex::Element(ui, "file-cut").setAttribute("style", "display:none");
+                    Gempyre::Element(ui, "file-cut").setAttribute("style", "display:none");
                 }
          } else {
-            Telex::Element(ui, "filename").setHTML("");
+            Gempyre::Element(ui, "filename").setHTML("");
         }
       });
-   Telex::Element(ui, "file-cut").setAttribute("style", "display:none");
+   Gempyre::Element(ui, "file-cut").setAttribute("style", "display:none");
    ui.run();
    return 0;
 }
