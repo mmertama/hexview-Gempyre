@@ -64,14 +64,15 @@ std::string toOffset(const Bytes& bytes) {
     return stream.str();
 }
 
-int main(int /*argc*/, char** /*argv*/)  {
-    std::string filename;
-    const std::string miniview = GempyreUtils::systemEnv("GEMPYRE_EXTENSION") ;
-    gempyre_utils_assert_x(!miniview.empty(), "GEMPYRE_EXTENSION not set");
-    gempyre_utils_assert_x(GempyreUtils::isExecutable(miniview), "GEMPYRE_EXTENSION does not point to file");
+int main(int argc, char** argv)  {
+    const auto plist = GempyreUtils::parseArgs(argc, argv, {});
+    const std::string py = std::holds_alternative<GempyreUtils::Params>(plist)
+            && !std::get<GempyreUtils::ParamList>(std::get<GempyreUtils::Params>(plist)).empty() ?
+                std::get<GempyreUtils::ParamList>(std::get<GempyreUtils::Params>(plist))[0] : G_PYTHON;
     Gempyre::Ui ui({{"/hexview.html", Hexviewhtml}, {"/hexview.css", Hexviewcss}, {"/text_x_hex.png", Text_x_hexpng}},
-                 "hexview.html", miniview, "500 640 Hexview");
+                 "hexview.html", py + " " + std::string(G_EXTENSION), "500 640 Hexview");
     Gempyre::Element fileDialog(ui, "openfile");
+    std::string filename;
     fileDialog.subscribe("click", [&ui, &filename](const Gempyre::Event&) {
         const auto out = GempyreClient::Dialog<Gempyre::Ui>(ui).openFileDialog();
 
