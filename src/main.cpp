@@ -65,21 +65,17 @@ std::string toOffset(const Bytes& bytes) {
 }
 
 int main(int argc, char** argv)  {
+    Gempyre::setDebug();
+  //  GempyreUtils::FileLogWriter lw("hexlog.txt");
+  //  GempyreUtils::setLogWriter(&lw);
+    Gempyre::Ui ui(Hexview_resourceh, "hexview.html", argc, argv);
+
     const auto plist = GempyreUtils::parseArgs(argc, argv, {});
-#ifdef G_PYTHON
-    const std::string py = std::holds_alternative<GempyreUtils::Params>(plist)
-            && !std::get<GempyreUtils::ParamList>(std::get<GempyreUtils::Params>(plist)).empty() ?
-                std::get<GempyreUtils::ParamList>(std::get<GempyreUtils::Params>(plist))[0] : G_PYTHON;
-    Gempyre::Ui ui({{"/hexview.html", Hexviewhtml}, {"/hexview.css", Hexviewcss}, {"/text_x_hex.png", Text_x_hexpng}},
-                 "hexview.html", py + " " + std::string(G_EXTENSION), "500 640 Hexview");
-#else
-    Gempyre::Ui ui({{"/hexview.html", Hexviewhtml}, {"/hexview.css", Hexviewcss}, {"/text_x_hex.png", Text_x_hexpng}},
-                 "hexview.html");
-#endif
+                          
     Gempyre::Element fileDialog(ui, "openfile");
     std::string filename;
     fileDialog.subscribe("click", [&ui, &filename](const Gempyre::Event&) {
-        const auto out = GempyreClient::Dialog<Gempyre::Ui>(ui).openFileDialog();
+        const auto out = GempyreClient::Dialog<Gempyre::Ui>(ui).openFileDialog("Pick a file", "", {});
 
         if(out.has_value()) {
                 filename = std::any_cast<std::string>(*out);
