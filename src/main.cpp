@@ -68,14 +68,14 @@ int main(int argc, char** argv)  {
     Gempyre::setDebug();
   //  GempyreUtils::FileLogWriter lw("hexlog.txt");
   //  GempyreUtils::setLogWriter(&lw);
-    Gempyre::Ui ui(Hexview_resourceh, "hexview.html", argc, argv);
+    Gempyre::Ui ui(Hexview_resourceh, "hexview.html");
 
     const auto plist = GempyreUtils::parseArgs(argc, argv, {});
                           
     Gempyre::Element fileDialog(ui, "openfile");
     std::string filename;
     fileDialog.subscribe("click", [&ui, &filename](const Gempyre::Event&) {
-        const auto out = GempyreClient::Dialog<Gempyre::Ui>(ui).openFileDialog("Pick a file", "", {});
+        const auto out = Gempyre::Dialog::openFileDialog(ui, "Pick a file", "", {});
 
         if(out.has_value()) {
                 filename = std::any_cast<std::string>(*out);

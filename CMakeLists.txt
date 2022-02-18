@@ -6,10 +6,11 @@ set(CMAKE_CXX_STANDARD 17)
 
 find_package (gempyre REQUIRED)
 
-include(hiillos)
-include(gempyre)
+if(USE_HIILLOS)
+    include(hiillos)
+endif()
 
-#set(LIBS)
+include(gempyre)
 
 include_directories(include)
 add_executable(${PROJECT_NAME}
@@ -17,13 +18,15 @@ add_executable(${PROJECT_NAME}
    gui/hexview.html
    gui/hexview.css)
 
-hiillos_make_application(${PROJECT_NAME}) 
+if(USE_HIILLOS)
+    hiillos_make_application(${PROJECT_NAME})
+endif()
 
-gempyre_add_resources(PROJECT ${PROJECT_NAME} TARGET include/hexview_resource.h SOURCES gui/hexview.html gui/hexview.css gui/text_x_hex.png)
+gempyre_add_resources(PROJECT ${PROJECT_NAME}
+    TARGET include/hexview_resource.h
+    SOURCES gui/hexview.html gui/hexview.css gui/text_x_hex.png gui/gempyre.conf)
 
 target_link_libraries ( ${PROJECT_NAME}
-   #${LIBS}
-   #hiillos::hiillos
    gempyre::gempyre)
 
 
