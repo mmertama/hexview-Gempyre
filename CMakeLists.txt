@@ -10,6 +10,10 @@ if(USE_HIILLOS)
     include(hiillos)
 endif()
 
+if(USE_CONFIG)
+    set(CONFIG_FILE gui/gempyre.conf)
+endif()
+
 include(gempyre)
 
 include_directories(include)
@@ -24,7 +28,7 @@ endif()
 
 gempyre_add_resources(PROJECT ${PROJECT_NAME}
     TARGET include/hexview_resource.h
-    SOURCES gui/hexview.html gui/hexview.css gui/text_x_hex.png gui/gempyre.conf)
+    SOURCES gui/hexview.html gui/hexview.css gui/text_x_hex.png ${CONFIG_FILE})
 
 target_link_libraries ( ${PROJECT_NAME}
    gempyre::gempyre)

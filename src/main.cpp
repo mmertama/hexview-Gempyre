@@ -68,7 +68,7 @@ int main(int argc, char** argv)  {
     Gempyre::setDebug();
   //  GempyreUtils::FileLogWriter lw("hexlog.txt");
   //  GempyreUtils::setLogWriter(&lw);
-    Gempyre::Ui ui(Hexview_resourceh, "hexview.html");
+    Gempyre::Ui ui(Hexview_resourceh, "hexview.html", "HexView");
 
     const auto plist = GempyreUtils::parseArgs(argc, argv, {});
                           
