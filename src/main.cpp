@@ -65,38 +65,38 @@ std::string toOffset(const Bytes& bytes) {
 }
 
 int main(int argc, char** argv)  {
-    Gempyre::setDebug();
+    Gempyre::set_debug();
   //  GempyreUtils::FileLogWriter lw("hexlog.txt");
   //  GempyreUtils::setLogWriter(&lw);
-    Gempyre::Ui ui(Hexview_resourceh, "hexview.html", argc, argv);
+    Gempyre::Ui ui(Hexview_resourceh, "hexview.html");
 
-    const auto plist = GempyreUtils::parseArgs(argc, argv, {});
+    const auto plist = GempyreUtils::parse_args(argc, argv, {});
                           
     Gempyre::Element fileDialog(ui, "openfile");
     std::string filename;
     fileDialog.subscribe("click", [&ui, &filename](const Gempyre::Event&) {
-        const auto out = GempyreClient::Dialog<Gempyre::Ui>(ui).openFileDialog("Pick a file", "", {});
+        const auto out = Gempyre::Dialog::open_file_dialog("Pick a file");
 
         if(out.has_value()) {
                 filename = std::any_cast<std::string>(*out);
-                Gempyre::Element(ui, "filename").setHTML(filename);
+                Gempyre::Element(ui, "filename").set_html(filename);
                 const auto content = GempyreUtils::slurp<unsigned char>(filename, MaxBytes);
                 Gempyre::Element ascii(ui, "ascii-field");
-                ascii.setHTML(toAscii(content));
+                ascii.set_html(toAscii(content));
                 Gempyre::Element bytes(ui, "bytes-field");
-                bytes.setHTML(toBytes(content));
+                bytes.set_html(toBytes(content));
                 Gempyre::Element offset(ui, "offset-field");
-                offset.setHTML(toOffset(content));
-                if(MaxBytes < GempyreUtils::fileSize(filename)) {
-                    Gempyre::Element(ui, "file-cut").setAttribute("style", "display:block");
+                offset.set_html(toOffset(content));
+                if(MaxBytes < GempyreUtils::file_size(filename)) {
+                    Gempyre::Element(ui, "file-cut").set_attribute("style", "display:block");
                 } else {
-                    Gempyre::Element(ui, "file-cut").setAttribute("style", "display:none");
+                    Gempyre::Element(ui, "file-cut").set_attribute("style", "display:none");
                 }
          } else {
-            Gempyre::Element(ui, "filename").setHTML("");
+            Gempyre::Element(ui, "filename").set_html("");
         }
       });
-   Gempyre::Element(ui, "file-cut").setAttribute("style", "display:none");
+   Gempyre::Element(ui, "file-cut").set_attribute("style", "display:none");
    ui.run();
    return 0;
 }
